@@ -14,4 +14,5 @@ def register():
     Pool.register(
         ProductByLocation,
         OpenProductQuantitiesByWarehouse,
+        OpenBOMTree,
         module='product_variant_unique', type_='wizard')

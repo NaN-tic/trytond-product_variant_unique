@@ -36,6 +36,10 @@ msgstr ""
 "Valor por defecto del campo Variante única en el formulario de plantillas de"
 " producto."
 
+msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
+msgid "BOM Tree"
+msgstr "Árbol lista de material"
+
 msgctxt "model:ir.action,name:wizard_product_by_location"
 msgid "Product by Locations"
 msgstr "Producto por ubicación"

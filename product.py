@@ -8,7 +8,7 @@ from trytond.transaction import Transaction
 from trytond.modules.product.product import STATES, DEPENDS
 
 __all__ = ['Template', 'Product', 'ProductByLocation',
-    'OpenProductQuantitiesByWarehouse']
+    'OpenProductQuantitiesByWarehouse', 'OpenBOMTree']
 __metaclass__ = PoolMeta
 
 UNIQUE_STATES = STATES.copy()
@@ -311,3 +311,25 @@ class OpenProductQuantitiesByWarehouse:
                 return super(OpenProductQuantitiesByWarehouse,
                     self).do_open_(action)
         return super(OpenProductQuantitiesByWarehouse, self).do_open_(action)
+
+
+class OpenBOMTree:
+    __name__ = 'production.bom.tree.open'
+
+    def default_start(self, fields):
+        pool = Pool()
+        Template = pool.get('product.template')
+        transaction = Transaction()
+        context = transaction.context
+        new_context = {}
+        if context['active_model'] == 'product.template':
+            template = Template(context['active_id'])
+            if template.products:
+                product_id = template.products[0].id
+                new_context.update({
+                        'active_model': 'product.product',
+                        'active_id': product_id,
+                        'active_ids': [product_id],
+                        })
+        with transaction.set_context(**context):
+            return super(OpenBOMTree, self).default_start(fields)
