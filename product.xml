@@ -64,4 +64,11 @@
             <field name="action" ref="wizard_bom_tree_open_template"/>
         </record>
     </data>
+    <data depends="product_attribute_search">
+        <record model="ir.ui.view" id="template_view_list_attribute_search">
+            <field name="model">product.template</field>
+            <field name="inherit" ref="product.template_view_tree"/>
+            <field name="name">template_list_attribute_search</field>
+        </record>
+    </data>
 </tryton>

@@ -28,7 +28,13 @@ class Template:
     @classmethod
     def __setup__(cls):
         super(Template, cls).__setup__()
+        pool = Pool()
+        Product = pool.get('product.product')
         cls.products.size = If(Eval('unique_variant', False), 1, 9999999)
+        if hasattr(Product, 'attributes_string'):
+            # Extra dependency with pro
+            cls.attributes_string = fields.Function(fields.Char('Attributes'),
+                'get_attributes_string', searcher='search_attributes_string')
 
     @staticmethod
     def default_unique_variant():
@@ -90,6 +96,22 @@ class Template:
             tables['product'] = product_table
         table, _ = product_table[None]
         return [table.code]
+
+    @classmethod
+    def get_attributes_string(cls, templates, name):
+        result = {}.fromkeys([x.id for x in templates], '')
+        for template in templates:
+            if not template.unique_variant:
+                continue
+            result[template.id] = template.products[0].attributes_string
+        return result
+
+    @classmethod
+    def search_attributes_string(cls, name, clause):
+        return [
+            ('unique_variant', '=', True),
+            ('products.attributes_string',) + tuple(clause[1:]),
+            ]
 
     @classmethod
     def validate(cls, templates):
@@ -176,9 +198,8 @@ class Product:
         if not cls.active.states:
             cls.active.states = {}
         if cls.active.states.get('invisible'):
-            cls.active.states['invisible'] = Or(
-                cls.active.states['invisible'],
-                Eval('unique_variant', False))
+            cls.active.states['invisible'] = (cls.active.states['invisible']
+                | Eval('unique_variant', False))
         else:
             cls.active.states['invisible'] = Eval('unique_variant', False)
         if 'unique_variant' not in cls.active.depends:
