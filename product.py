@@ -101,9 +101,8 @@ class Template:
     def get_attributes_string(cls, templates, name):
         result = {}.fromkeys([x.id for x in templates], '')
         for template in templates:
-            if not template.unique_variant:
-                continue
-            result[template.id] = template.products[0].attributes_string
+            if template.unique_variant and template.products:
+                result[template.id] = template.products[0].attributes_string
         return result
 
     @classmethod
