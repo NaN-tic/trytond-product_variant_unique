@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -13,6 +13,10 @@ msgstr ""
 msgctxt "error:product.product:"
 msgid "The Template of the Product Variant must be unique."
 msgstr "La Plantilla a les Variants de producte ha de ser única."
+
+msgctxt "error:production.bom.tree.open:"
+msgid "The template \"%s\" not have a product variant."
+msgstr "La plantilla \"%s\" no dispossa de cap variant de producte."
 
 msgctxt "field:product.configuration,unique_variant:"
 msgid "Unique variant"

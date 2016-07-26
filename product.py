@@ -316,6 +316,14 @@ class OpenProductQuantitiesByWarehouse:
 class OpenBOMTree:
     __name__ = 'production.bom.tree.open'
 
+    @classmethod
+    def __setup__(cls):
+        super(OpenBOMTree, cls).__setup__()
+        cls._error_messages.update({
+                'not_product_variant': ('The template "%s" not have '
+                    'a product variant.'),
+                })
+
     def default_start(self, fields):
         Template = Pool().get('product.template')
 
@@ -324,12 +332,13 @@ class OpenBOMTree:
         new_context = {}
         if context['active_model'] == 'product.template':
             template = Template(context['active_id'])
-            if template.products:
-                product_id = template.products[0].id
-                new_context.update({
-                        'active_model': 'product.product',
-                        'active_id': product_id,
-                        'active_ids': [product_id],
-                        })
+            if not template.products:
+                self.raise_user_error('not_product_variant', template.rec_name)
+            product_id = template.products[0].id
+            new_context.update({
+                    'active_model': 'product.product',
+                    'active_id': product_id,
+                    'active_ids': [product_id],
+                    })
         with Transaction().set_context(**new_context):
             return super(OpenBOMTree, self).default_start(fields)
