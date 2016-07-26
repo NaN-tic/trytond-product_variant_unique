@@ -337,10 +337,10 @@ class OpenBOMTree:
     __name__ = 'production.bom.tree.open'
 
     def default_start(self, fields):
-        pool = Pool()
-        Template = pool.get('product.template')
-        transaction = Transaction()
-        context = transaction.context
+        Template = Pool().get('product.template')
+
+        context = Transaction().context
+
         new_context = {}
         if context['active_model'] == 'product.template':
             template = Template(context['active_id'])
@@ -351,5 +351,5 @@ class OpenBOMTree:
                         'active_id': product_id,
                         'active_ids': [product_id],
                         })
-        with transaction.set_context(**context):
+        with Transaction().set_context(**new_context):
             return super(OpenBOMTree, self).default_start(fields)
