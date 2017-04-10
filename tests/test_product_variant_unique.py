@@ -13,9 +13,6 @@ class TestProductVariantCase(ModuleTestCase):
     'Test Product Variant module'
     module = 'product_variant_unique'
 
-    def setUp(self):
-        trytond.tests.test_tryton.install_module('product_variant_unique')
-
     @with_transaction()
     def test_unique_variant(self):
         pool = Pool()
