@@ -44,6 +44,12 @@ class Template:
         if config:
             return config.unique_variant
 
+    def get_rec_name(self, name):
+        res = super(Template, self).get_rec_name(name)
+        if self.code:
+            res = '[%s] %s' % (self.code, res)
+        return res
+
     @classmethod
     def search_rec_name(cls, name, clause):
         return ['OR', super(Template, cls).search_rec_name(name, clause),
