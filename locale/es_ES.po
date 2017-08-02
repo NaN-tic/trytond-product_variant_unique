@@ -40,6 +40,10 @@ msgstr ""
 "Valor por defecto del campo Variante única en el formulario de plantillas de"
 " producto."
 
+msgctxt "model:ir.action,name:act_product_provisioning_view"
+msgid "Provisioning Rules"
+msgstr "Reglas de abastecimiento"
+
 msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
 msgid "BOM Tree"
 msgstr "Árbol lista de material"

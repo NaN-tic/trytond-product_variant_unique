@@ -40,6 +40,10 @@ msgstr ""
 "Valor per defecte del camp Variant única en el formulari de plantilles de "
 "producte."
 
+msgctxt "model:ir.action,name:act_product_provisioning_view"
+msgid "Provisioning Rules"
+msgstr "Regles de proveïment"
+
 msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
 msgid "BOM Tree"
 msgstr "Arbre de l'escandall"
