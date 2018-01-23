@@ -5,10 +5,10 @@ from trytond.model import fields
 from trytond.pool import PoolMeta
 
 __all__ = ['Configuration']
-__metaclass__ = PoolMeta
 
 
 class Configuration:
     __name__ = 'product.configuration'
+    __metaclass__ = PoolMeta
     unique_variant = fields.Boolean('Unique variant', help='Default value'
         ' for the unique variant field in template form.')

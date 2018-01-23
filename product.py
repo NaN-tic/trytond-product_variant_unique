@@ -7,9 +7,7 @@ from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
 from trytond.modules.product.product import STATES, DEPENDS
 
-__all__ = ['Template', 'Product', 'ProductByLocation',
-    'OpenProductQuantitiesByWarehouse', 'OpenBOMTree']
-__metaclass__ = PoolMeta
+__all__ = ['Template', 'Product', 'OpenBOMTree']
 
 UNIQUE_STATES = STATES.copy()
 UNIQUE_STATES.update({
@@ -19,6 +17,7 @@ UNIQUE_STATES.update({
 
 class Template:
     __name__ = 'product.template'
+    __metaclass__ = PoolMeta
 
     unique_variant = fields.Boolean('Unique variant')
     code = fields.Function(fields.Char("Code", states=UNIQUE_STATES,
@@ -31,6 +30,7 @@ class Template:
         pool = Pool()
         Product = pool.get('product.product')
         cls.products.size = If(Eval('unique_variant', False), 1, 9999999)
+        cls.products.depends += ['unique_variant']
         if hasattr(Product, 'attributes_string'):
             # Extra dependency with pro
             cls.attributes_string = fields.Function(fields.Char('Attributes'),
@@ -191,6 +191,7 @@ class Template:
 
 
 class Product:
+    __metaclass__ = PoolMeta
     __name__ = 'product.product'
 
     unique_variant = fields.Function(fields.Boolean('Unique variant'),
@@ -251,95 +252,8 @@ class Product:
             active_test=active_test, tables=tables)
 
 
-class ProductByLocation:
-    __name__ = 'product.by_location'
-
-    @classmethod
-    def __setup__(cls):
-        super(ProductByLocation, cls).__setup__()
-        cls._error_messages.update({
-                'not_unique_variant': ('The template "%s" must be marked as '
-                    'unique variant in order to be able to see it\'s stock'),
-                })
-
-    def default_start(self, fields):
-        Template = Pool().get('product.template')
-        try:
-            res = super(ProductByLocation, self).default_start(fields)
-        except AttributeError:
-            res = {}
-        context = Transaction().context
-        if context['active_model'] == 'product.template':
-            template = Template(context['active_id'])
-            if not template.unique_variant:
-                self.raise_user_error('not_unique_variant', template.rec_name)
-        return res
-
-    def do_open(self, action):
-        Template = Pool().get('product.template')
-
-        context = Transaction().context
-        if context['active_model'] == 'product.template':
-            template = Template(context['active_id'])
-            if not template.products:
-                return None, {}
-            product_id = template.products[0].id
-            new_context = {
-                'active_model': 'product.template',
-                'active_id': product_id,
-                'active_ids': [product_id],
-                }
-            with Transaction().set_context(new_context):
-                return super(ProductByLocation, self).do_open(action)
-        return super(ProductByLocation, self).do_open(action)
-
-
-class OpenProductQuantitiesByWarehouse:
-    __name__ = 'stock.product_quantities_warehouse'
-
-    @classmethod
-    def __setup__(cls):
-        super(OpenProductQuantitiesByWarehouse, cls).__setup__()
-        cls._error_messages.update({
-                'not_unique_variant': ('The template "%s" must be marked as '
-                    'unique variant in order to be able to see it\'s stock'),
-                })
-
-    def default_start(self, fields):
-        Template = Pool().get('product.template')
-        try:
-            res = super(OpenProductQuantitiesByWarehouse, self).default_start(
-                fields)
-        except AttributeError:
-            res = {}
-        context = Transaction().context
-        if context['active_model'] == 'product.template':
-            template = Template(context['active_id'])
-            if not template.unique_variant:
-                self.raise_user_error('not_unique_variant', template.rec_name)
-        return res
-
-    def do_open_(self, action):
-        Template = Pool().get('product.template')
-
-        context = Transaction().context
-        if context['active_model'] == 'product.template':
-            template = Template(context['active_id'])
-            if not template.products:
-                return None, {}
-            product_id = template.products[0].id
-            new_context = {
-                'active_model': 'product.template',
-                'active_id': product_id,
-                'active_ids': [product_id],
-                }
-            with Transaction().set_context(new_context):
-                return super(OpenProductQuantitiesByWarehouse,
-                    self).do_open_(action)
-        return super(OpenProductQuantitiesByWarehouse, self).do_open_(action)
-
-
 class OpenBOMTree:
+    __metaclass__ = PoolMeta
     __name__ = 'production.bom.tree.open'
 
     @classmethod
