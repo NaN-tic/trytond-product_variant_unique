@@ -13,4 +13,5 @@ def register():
         module='product_variant_unique', type_='model')
     Pool.register(
         product.OpenBOMTree,
+        depends=['production'],
         module='product_variant_unique', type_='wizard')
