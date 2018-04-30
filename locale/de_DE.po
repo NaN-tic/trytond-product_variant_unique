@@ -1,0 +1,41 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:product.by_location:"
+msgid ""
+"The template \"%s\" must be marked as unique variant in order to be able to "
+"see it's stock"
+msgstr "Die Vorlage \"%s\" muss eindeutig sein, damit diese im Lager erscheint."
+
+msgctxt "error:product.product:"
+msgid "The Template of the Product Variant must be unique."
+msgstr "Der Artikel dieser Variante kann nur einmal verwendet werden."
+
+msgctxt "field:product.configuration,unique_variant:"
+msgid "Unique variant"
+msgstr "Eindeutige Varianten"
+
+msgctxt "field:product.product,unique_variant:"
+msgid "Unique variant"
+msgstr "Eindeutige Varianten"
+
+msgctxt "field:product.template,code:"
+msgid "Code"
+msgstr "Variantennummer"
+
+msgctxt "field:product.template,unique_variant:"
+msgid "Unique variant"
+msgstr "Eindeutige Varianten"
+
+msgctxt "help:product.configuration,unique_variant:"
+msgid "Default value for the unique variant field in template form."
+msgstr "Voreinstellung für das Feld auf dem Artikelformular"
+
+msgctxt "model:ir.action,name:wizard_product_by_location"
+msgid "Product by Locations"
+msgstr "Variante nach Lagerort"
+
+msgctxt "model:ir.action,name:wizard_product_quantities_warehouse"
+msgid "Product Quantities By Warehouse"
+msgstr "Variantenanzahl nach Warenlager"
