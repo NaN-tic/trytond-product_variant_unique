@@ -216,7 +216,7 @@ class Product:
                     'be unique.'),
                 })
 
-    @fields.depends('template', '_parent_sale.unique_variant')
+    @fields.depends('template')
     def on_change_with_unique_variant(self, name=None):
         if self.template:
             return self.template.unique_variant
