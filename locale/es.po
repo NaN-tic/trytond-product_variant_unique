@@ -43,11 +43,3 @@ msgstr ""
 msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
 msgid "BOM Tree"
 msgstr "Árbol lista de material"
-
-msgctxt "model:ir.action,name:wizard_product_by_location"
-msgid "Product by Locations"
-msgstr "Producto por ubicación"
-
-msgctxt "model:ir.action,name:wizard_product_quantities_warehouse"
-msgid "Product Quantities By Warehouse"
-msgstr "Unidades de producto por almacén"
