@@ -14,44 +14,7 @@
             <field name="name">template_form</field>
         </record>
     </data>
-    <data depends="stock">
-        <record model="ir.action.wizard" id="wizard_product_by_location">
-            <field name="name">Product by Locations</field>
-            <field name="wiz_name">product.by_location</field>
-            <field name="model">product.template</field>
-        </record>
-        <record model="ir.action.keyword"
-                id="act_location_quantity_keyword1">
-            <field name="keyword">form_relate</field>
-            <field name="model">product.template,-1</field>
-            <field name="action" ref="wizard_product_by_location"/>
-        </record>
-        <record model="ir.action-res.group"
-            id="wizard_product_by_location-group_stock">
-            <field name="action" ref="wizard_product_by_location"/>
-            <field name="group" ref="stock.group_stock"/>
-        </record>
-
-        <record model="ir.action.wizard"
-            id="wizard_product_quantities_warehouse">
-            <field name="name">Product Quantities By Warehouse</field>
-            <field name="wiz_name">stock.product_quantities_warehouse</field>
-            <field name="model">product.template</field>
-        </record>
-        <record model="ir.action.keyword"
-            id="act_product_quantities_warehouse_keyword1">
-            <field name="keyword">form_relate</field>
-            <field name="model">product.template,-1</field>
-            <field name="action" ref="wizard_product_quantities_warehouse"/>
-        </record>
-        <record model="ir.action-res.group"
-            id="wizard_product_quantities_warehouse-group_stock">
-            <field name="action" ref="wizard_product_quantities_warehouse"/>
-            <field name="group" ref="stock.group_stock"/>
-        </record>
-    </data>
     <data depends="production">
-
         <record model="ir.action.wizard" id="wizard_bom_tree_open_template">
             <field name="name">BOM Tree</field>
             <field name="wiz_name">production.bom.tree.open</field>

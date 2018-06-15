@@ -43,11 +43,3 @@ msgstr ""
 msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
 msgid "BOM Tree"
 msgstr "Arbre de l'escandall"
-
-msgctxt "model:ir.action,name:wizard_product_by_location"
-msgid "Product by Locations"
-msgstr "Producte per ubicacions"
-
-msgctxt "model:ir.action,name:wizard_product_quantities_warehouse"
-msgid "Product Quantities By Warehouse"
-msgstr "Unitats de producte per magatzem"
