@@ -7,7 +7,7 @@ from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
 from trytond.modules.product.product import STATES, DEPENDS
 
-__all__ = ['Template', 'Product', 'OpenBOMTree']
+__all__ = ['Template', 'Product', 'OpenBOMTree', 'OpenReverseBOMTree']
 
 UNIQUE_STATES = STATES.copy()
 UNIQUE_STATES.update({
@@ -250,6 +250,38 @@ class Product:
             active_test = False
         return super(Product, cls).search_domain(domain,
             active_test=active_test, tables=tables)
+
+
+class OpenReverseBOMTree:
+    __metaclass__ = PoolMeta
+    __name__ = 'production.bom.reverse_tree.open'
+
+    @classmethod
+    def __setup__(cls):
+        super(OpenReverseBOMTree, cls).__setup__()
+        cls._error_messages.update({
+                'not_product_variant': ('The template "%s" not have '
+                    'a product variant.'),
+                })
+
+    def do_start(self, action):
+        Template = Pool().get('product.template')
+        context = Transaction().context
+        new_context = {}
+        if context['active_model'] == 'product.template':
+            template = Template(context['active_id'])
+            if not template.products:
+                self.raise_user_error('not_product_variant', template.rec_name)
+            product_id = template.products[0].id
+            new_context.update({
+                    'active_model': 'product.product',
+                    'active_id': product_id,
+                    'active_ids': [product_id],
+                    })
+            action['res_model'] = 'product.product'
+            action['active_id'] = product_id
+        with Transaction().set_context(**new_context):
+            return super(OpenReverseBOMTree, self).do_start(action)
 
 
 class OpenBOMTree:

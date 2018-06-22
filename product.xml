@@ -27,4 +27,28 @@
             <field name="action" ref="wizard_bom_tree_open_template"/>
         </record>
     </data>
+    <data depends="production_reverse_bom">
+        <record model="ir.action.act_window" id="act_product_template_reverse_bom">
+            <field name="name">Reverse BOMs</field>
+            <field name="res_model">product.template</field>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_product_template_reverse_bom_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="production_reverse_bom.product_reverse_bom_view_list"/>
+            <field name="act_window" ref="act_product_template_reverse_bom"/>
+        </record>
+
+        <record model="ir.action.wizard" id="wizard_bom_reverse_tree_template">
+            <field name="name">Reverse BOM Tree</field>
+            <field name="wiz_name">production.bom.reverse_tree.open</field>
+
+        </record>
+        <record model="ir.action.keyword"
+            id="act_bom_reverse_tree_open_keyword1">
+            <field name="keyword">form_relate</field>
+            <field name="model">product.template,-1</field>
+            <field name="action" ref="wizard_bom_reverse_tree_template"/>
+        </record>
+    </data>
 </tryton>

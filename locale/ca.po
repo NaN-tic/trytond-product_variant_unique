@@ -14,6 +14,10 @@ msgctxt "error:product.product:"
 msgid "The Template of the Product Variant must be unique."
 msgstr "La Plantilla a les Variants de producte ha de ser única."
 
+msgctxt "error:production.bom.reverse_tree.open:"
+msgid "The template \"%s\" not have a product variant."
+msgstr "La plantilla \"%s\" no dispossa de cap variant de producte."
+
 msgctxt "error:production.bom.tree.open:"
 msgid "The template \"%s\" not have a product variant."
 msgstr "La plantilla \"%s\" no dispossa de cap variant de producte."
@@ -39,6 +43,14 @@ msgid "Default value for the unique variant field in template form."
 msgstr ""
 "Valor per defecte del camp Variant única en el formulari de plantilles de "
 "producte."
+
+msgctxt "model:ir.action,name:act_product_template_reverse_bom"
+msgid "Reverse BOMs"
+msgstr "Llistes de materials inverses"
+
+msgctxt "model:ir.action,name:wizard_bom_reverse_tree_template"
+msgid "Reverse BOM Tree"
+msgstr "Arbre de l'escandall invers"
 
 msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
 msgid "BOM Tree"
