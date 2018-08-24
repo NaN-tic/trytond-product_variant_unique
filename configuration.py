@@ -7,8 +7,7 @@ from trytond.pool import PoolMeta
 __all__ = ['Configuration']
 
 
-class Configuration:
+class Configuration(metaclass=PoolMeta):
     __name__ = 'product.configuration'
-    __metaclass__ = PoolMeta
     unique_variant = fields.Boolean('Unique variant', help='Default value'
         ' for the unique variant field in template form.')

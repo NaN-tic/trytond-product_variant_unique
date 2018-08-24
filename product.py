@@ -15,9 +15,8 @@ UNIQUE_STATES.update({
         })
 
 
-class Template:
+class Template(metaclass=PoolMeta):
     __name__ = 'product.template'
-    __metaclass__ = PoolMeta
 
     unique_variant = fields.Boolean('Unique variant')
     code = fields.Function(fields.Char("Code", states=UNIQUE_STATES,
@@ -190,8 +189,7 @@ class Template:
             Product.write(*product_args)
 
 
-class Product:
-    __metaclass__ = PoolMeta
+class Product(metaclass=PoolMeta):
     __name__ = 'product.product'
 
     unique_variant = fields.Function(fields.Boolean('Unique variant'),
@@ -252,8 +250,7 @@ class Product:
             active_test=active_test, tables=tables)
 
 
-class OpenReverseBOMTree:
-    __metaclass__ = PoolMeta
+class OpenReverseBOMTree(metaclass=PoolMeta):
     __name__ = 'production.bom.reverse_tree.open'
 
     @classmethod
@@ -284,8 +281,7 @@ class OpenReverseBOMTree:
             return super(OpenReverseBOMTree, self).do_start(action)
 
 
-class OpenBOMTree:
-    __metaclass__ = PoolMeta
+class OpenBOMTree(metaclass=PoolMeta):
     __name__ = 'production.bom.tree.open'
 
     @classmethod
