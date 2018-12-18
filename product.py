@@ -173,9 +173,10 @@ class Template:
                 for template in templates:
                     if template.unique_variant:
                         with Transaction().set_context(active_test=False):
+                            template, = cls.browse([template.id])
                             if values['active']:
                                 to_active_products += [p
-                                    for p in template.products if not p.active]
+                                    for p in template.products]
                             else:
                                 to_deactive_products += [p
                                     for p in template.products if p.active]
