@@ -6,6 +6,8 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
 from trytond.modules.product.product import STATES, DEPENDS
+from trytond.i18n import gettext
+from trytond.exceptions import UserError
 
 __all__ = ['Template', 'Product', 'OpenBOMTree', 'OpenReverseBOMTree']
 
@@ -210,11 +212,6 @@ class Product(metaclass=PoolMeta):
         if 'unique_variant' not in cls.active.depends:
             cls.active.depends.append('unique_variant')
 
-        cls._error_messages.update({
-                'template_uniq': ('The Template of the Product Variant must '
-                    'be unique.'),
-                })
-
     @fields.depends('template')
     def on_change_with_unique_variant(self, name=None):
         if self.template:
@@ -236,12 +233,12 @@ class Product(metaclass=PoolMeta):
         unique_products = list(set(p for p in products if p.unique_variant))
         templates = [p.template.id for p in unique_products]
         if len(set(templates)) != len(templates):
-            cls.raise_user_error('template_uniq')
+            raise UserError(gettext('product_variant_unique.template_uniq'))
         if cls.search([
                     ('id', 'not in', [p.id for p in unique_products]),
                     ('template', 'in', templates),
                     ], limit=1):
-            cls.raise_user_error('template_uniq')
+            raise UserError(gettext('product_variant_unique.template_uniq'))
 
     @classmethod
     def search_domain(cls, domain, active_test=True, tables=None):
@@ -254,14 +251,6 @@ class Product(metaclass=PoolMeta):
 class OpenReverseBOMTree(metaclass=PoolMeta):
     __name__ = 'production.bom.reverse_tree.open'
 
-    @classmethod
-    def __setup__(cls):
-        super(OpenReverseBOMTree, cls).__setup__()
-        cls._error_messages.update({
-                'not_product_variant': ('The template "%s" not have '
-                    'a product variant.'),
-                })
-
     def do_start(self, action):
         Template = Pool().get('product.template')
         context = Transaction().context
@@ -269,7 +258,9 @@ class OpenReverseBOMTree(metaclass=PoolMeta):
         if context['active_model'] == 'product.template':
             template = Template(context['active_id'])
             if not template.products:
-                self.raise_user_error('not_product_variant', template.rec_name)
+                raise UserError(gettext(
+                    'product_variant_unique.not_product_variant',
+                    template=template.rec_name))
             product_id = template.products[0].id
             new_context.update({
                     'active_model': 'product.product',
@@ -285,13 +276,6 @@ class OpenReverseBOMTree(metaclass=PoolMeta):
 class OpenBOMTree(metaclass=PoolMeta):
     __name__ = 'production.bom.tree.open'
 
-    @classmethod
-    def __setup__(cls):
-        super(OpenBOMTree, cls).__setup__()
-        cls._error_messages.update({
-                'not_product_variant': ('The template "%s" not have '
-                    'a product variant.'),
-                })
 
     def default_start(self, fields):
         Template = Pool().get('product.template')
@@ -302,7 +286,9 @@ class OpenBOMTree(metaclass=PoolMeta):
         if context['active_model'] == 'product.template':
             template = Template(context['active_id'])
             if not template.products:
-                self.raise_user_error('not_product_variant', template.rec_name)
+                raise UserError(gettext(
+                    'product_variant_unique.not_product_variant',
+                        template=template.rec_name))
             product_id = template.products[0].id
             new_context.update({
                     'active_model': 'product.product',
