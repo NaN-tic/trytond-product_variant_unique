@@ -2,26 +2,6 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "error:product.by_location:"
-msgid ""
-"The template \"%s\" must be marked as unique variant in order to be able to "
-"see it's stock"
-msgstr ""
-"La plantilla \"%s\" debe estar marcada como variante única para poder "
-"consultar su estoc."
-
-msgctxt "error:product.product:"
-msgid "The Template of the Product Variant must be unique."
-msgstr "La Plantilla en las Variantes de producte debe ser única."
-
-msgctxt "error:production.bom.reverse_tree.open:"
-msgid "The template \"%s\" not have a product variant."
-msgstr "La plantilla \"%s\" no dispone de ninguna variante de producto."
-
-msgctxt "error:production.bom.tree.open:"
-msgid "The template \"%s\" not have a product variant."
-msgstr "La plantilla \"%s\" no dispone de ninguna variante de producto."
-
 msgctxt "field:product.configuration,unique_variant:"
 msgid "Unique variant"
 msgstr "Variante única"
@@ -44,14 +24,14 @@ msgstr ""
 "Valor por defecto del campo Variante única en el formulario de plantillas de"
 " producto."
 
-msgctxt "model:ir.action,name:act_product_template_reverse_bom"
+msgctxt "model:ir.action,name:"
 msgid "Reverse BOMs"
 msgstr "Listas de materiales inverso"
 
-msgctxt "model:ir.action,name:wizard_bom_reverse_tree_template"
-msgid "Reverse BOM Tree"
-msgstr "Árbol lista de material inverso"
+msgctxt "model:ir.message,text:not_product_variant"
+msgid "The template \"%(template)s\" not have a product variant."
+msgstr "La plantilla \"%(template)s\" no tiene una variante de producto."
 
-msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
-msgid "BOM Tree"
-msgstr "Árbol lista de material"
+msgctxt "model:ir.message,text:template_uniq"
+msgid "The Template of the Product Variant must be unique."
+msgstr "La plantilla de la variante de producto debe ser única."
