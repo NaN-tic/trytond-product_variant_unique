@@ -28,6 +28,10 @@ msgctxt "model:ir.action,name:"
 msgid "Reverse BOMs"
 msgstr "Llistes de materials inverses"
 
+msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
+msgid "BOM Tree"
+msgstr "Arbre de llista de materials"
+
 msgctxt "model:ir.message,text:not_product_variant"
 msgid "The template \"%(template)s\" not have a product variant."
 msgstr "La plantilla \"%(template)s\" no té una variant del producte."
