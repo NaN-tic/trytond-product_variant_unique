@@ -48,6 +48,10 @@ msgctxt "model:ir.action,name:act_product_template_reverse_bom"
 msgid "Reverse BOMs"
 msgstr "Listas de materiales inverso"
 
+msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
+msgid "BOM Tree"
+msgstr "Árbol de lista de materiales"
+
 msgctxt "model:ir.action,name:wizard_bom_reverse_tree_template"
 msgid "Reverse BOM Tree"
 msgstr "Árbol lista de material inverso"
