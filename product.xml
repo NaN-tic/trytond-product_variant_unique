@@ -13,6 +13,11 @@
             <field name="inherit" ref="product.template_view_form"/>
             <field name="name">template_form</field>
         </record>
+        <record model="ir.ui.view" id="product_view_tree">
+            <field name="model">product.product</field>
+            <field name="inherit" ref="product.product_view_tree"/>
+            <field name="name">product_tree</field>
+        </record>
     </data>
     <data depends="production">
         <record model="ir.action.wizard" id="wizard_bom_tree_open_template">
