@@ -212,7 +212,7 @@ class Product(metaclass=PoolMeta):
         if 'unique_variant' not in cls.active.depends:
             cls.active.depends.append('unique_variant')
 
-    @fields.depends('template')
+    @fields.depends('_parent_template.unique_variant', 'template')
     def on_change_with_unique_variant(self, name=None):
         if self.template:
             return self.template.unique_variant
