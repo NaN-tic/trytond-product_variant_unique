@@ -21,7 +21,7 @@ class Template(metaclass=PoolMeta):
     unique_variant = fields.Boolean('Unique variant')
     code = fields.Function(fields.Char("Code", states=UNIQUE_STATES,
             depends=DEPENDS + ['unique_variant']),
-        'get_code', setter='set_code', searcher='search_code')
+        'get_code', searcher='search_code')
 
     @classmethod
     def __setup__(cls):
@@ -31,7 +31,7 @@ class Template(metaclass=PoolMeta):
         cls.products.size = If(Eval('unique_variant', False), 1, 9999999)
         cls.products.depends += ['unique_variant']
         if hasattr(Product, 'attributes_string'):
-            # Extra dependency with pro
+            # Extra dependency with product_attribute_search
             cls.attributes_string = fields.Function(fields.Char('Attributes'),
                 'get_attributes_string', searcher='search_attributes_string')
 
@@ -58,26 +58,6 @@ class Template(metaclass=PoolMeta):
         if self.unique_variant:
             with Transaction().set_context(active_test=False):
                 return self.products and self.products[0].code or None
-
-    @classmethod
-    def set_code(cls, templates, name, value):
-        Product = Pool().get('product.product')
-
-        products = set()
-        for template in templates:
-            if not template.unique_variant:
-                continue
-            with Transaction().set_context(active_test=False):
-                if template.products:
-                    products.add(template.products[0])
-                elif value:
-                    new_product = Product(template=template)
-                    new_product.save()
-                    products.add(new_product)
-        if products:
-            Product.write(list(products), {
-                    'code': value,
-                    })
 
     @classmethod
     def search_code(cls, name, clause):
