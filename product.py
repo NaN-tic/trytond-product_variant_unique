@@ -56,10 +56,15 @@ class Template(metaclass=PoolMeta):
         return ['OR', super(Template, cls).search_rec_name(name, clause),
             [('code',) + tuple(clause[1:])]]
 
-    def get_code(self, name):
-        if self.unique_variant:
-            with Transaction().set_context(active_test=False):
-                return self.products and self.products[0].code or None
+    @classmethod
+    def get_code(cls, templates, name):
+        pool = Pool()
+        Template = pool.get('product.template')
+        with Transaction().set_context(active_test=False):
+            templates = Template.browse(templates)
+            result = {x.id: x.products[0].code if x.unique_variant and
+                x.products else None for x in templates}
+        return result
 
     @classmethod
     def search_code(cls, name, clause):
@@ -110,36 +115,6 @@ class Template(metaclass=PoolMeta):
         if products:
             Product.validate_unique_template(products)
         super(Template, cls).validate(templates)
-
-    @classmethod
-    def search_domain(cls, domain, active_test=True, tables=None):
-        def find_active_code(domain):
-            active_found = code_found = False
-            for arg in domain:
-                if (isinstance(arg, (tuple, list)) and len(arg) == 3
-                        and (tuple(arg) == ('active', '=', False)
-                            or (arg[0] == 'active' and arg[1] == 'in'
-                                and False in arg[2]))):
-                    active_found = True
-                elif (isinstance(arg, tuple)
-                        or (isinstance(arg, list)
-                            and len(arg) > 2
-                            and arg[1] in OPERATORS)):
-                    if arg[0] in ('code', 'rec_name'):
-                        code_found = True
-                elif isinstance(arg, list):
-                    active_found_rec, code_found_rec = find_active_code(arg)
-                    active_found |= active_found_rec
-                    code_found |= code_found_rec
-                if active_found and code_found:
-                    break
-            return active_found, code_found
-
-        active_found, code_found = find_active_code(domain)
-        with Transaction().set_context(
-                search_inactive_products=(active_found and code_found)):
-            return super(Template, cls).search_domain(domain,
-                active_test=active_test, tables=tables)
 
     @classmethod
     def write(cls, *args):
@@ -220,13 +195,6 @@ class Product(metaclass=PoolMeta):
                     ], limit=1):
             raise UserError(gettext('product_variant_unique.template_uniq'))
 
-    @classmethod
-    def search_domain(cls, domain, active_test=True, tables=None):
-        if Transaction().context.get('search_inactive_products'):
-            active_test = False
-        return super(Product, cls).search_domain(domain,
-            active_test=active_test, tables=tables)
-
 
 class OpenReverseBOMTree(metaclass=PoolMeta):
     __name__ = 'production.bom.reverse_tree.open'
@@ -255,7 +223,6 @@ class OpenReverseBOMTree(metaclass=PoolMeta):
 
 class OpenBOMTree(metaclass=PoolMeta):
     __name__ = 'production.bom.tree.open'
-
 
     def default_start(self, fields):
         Template = Pool().get('product.template')
