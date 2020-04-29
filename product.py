@@ -1,29 +1,22 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-from trytond.const import OPERATORS
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
-from trytond.modules.product.product import STATES, DEPENDS
 from trytond.i18n import gettext
 from trytond.exceptions import UserError
 
 __all__ = ['Template', 'Product', 'OpenBOMTree', 'OpenReverseBOMTree']
 
-UNIQUE_STATES = STATES.copy()
-UNIQUE_STATES.update({
+UNIQUE_STATES = {
         'invisible': ~Eval('unique_variant', False)
-        })
+        }
 
 
 class Template(metaclass=PoolMeta):
     __name__ = 'product.template'
-
     unique_variant = fields.Boolean('Unique variant')
-    code = fields.Function(fields.Char("Code", states=UNIQUE_STATES,
-            depends=DEPENDS + ['unique_variant']),
-        'get_code', searcher='search_code')
 
     @classmethod
     def __setup__(cls):
@@ -44,34 +37,6 @@ class Template(metaclass=PoolMeta):
         config = Config.get_singleton()
         if config:
             return config.unique_variant
-
-    def get_rec_name(self, name):
-        res = super(Template, self).get_rec_name(name)
-        if self.code:
-            res = '[%s] %s' % (self.code, res)
-        return res
-
-    @classmethod
-    def search_rec_name(cls, name, clause):
-        return ['OR', super(Template, cls).search_rec_name(name, clause),
-            [('code',) + tuple(clause[1:])]]
-
-    @classmethod
-    def get_code(cls, templates, name):
-        pool = Pool()
-        Template = pool.get('product.template')
-        with Transaction().set_context(active_test=False):
-            templates = Template.browse(templates)
-            result = {x.id: x.products[0].code if x.unique_variant and
-                x.products else None for x in templates}
-        return result
-
-    @classmethod
-    def search_code(cls, name, clause):
-        return [
-            ('unique_variant', '=', True),
-            ('products.code',) + tuple(clause[1:]),
-            ]
 
     @staticmethod
     def order_code(tables):
@@ -149,7 +114,6 @@ class Template(metaclass=PoolMeta):
 
 class Product(metaclass=PoolMeta):
     __name__ = 'product.product'
-
     unique_variant = fields.Function(fields.Boolean('Unique variant'),
         'on_change_with_unique_variant', searcher='search_unique_variant')
 

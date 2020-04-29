@@ -10,10 +10,6 @@ msgctxt "field:product.product,unique_variant:"
 msgid "Unique variant"
 msgstr "Variant única"
 
-msgctxt "field:product.template,code:"
-msgid "Code"
-msgstr "Codi"
-
 msgctxt "field:product.template,unique_variant:"
 msgid "Unique variant"
 msgstr "Variant única"
