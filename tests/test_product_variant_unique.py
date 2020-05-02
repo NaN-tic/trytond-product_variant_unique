@@ -47,8 +47,6 @@ class TestProductVariantCase(ModuleTestCase):
         self.assertEqual(len(products), 2)
         self.assertEqual(len(template.products), 2)
         self.assertIsNone(template.code)
-        Template.write([template], {'code': '1'})
-        self.assertIsNone(template.code)
         self.assertEqual(sorted(p.code for p in products), ['1', '2'])
 
         with self.assertRaises(UserError) as cm:
@@ -75,9 +73,6 @@ class TestProductVariantCase(ModuleTestCase):
         self.assertEqual(Template.search([
                     ('rec_name', '=', '1'),
                     ]), [uniq_template])
-        Template.write([uniq_template], {'code': '2'})
-        self.assertEqual(uniq_template.code, '2')
-        self.assertEqual(uniq_template.products[0].code, '2')
         with self.assertRaises(UserError) as cm:
             Product.create([{
                         'code': '3',
