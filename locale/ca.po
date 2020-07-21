@@ -26,7 +26,15 @@ msgstr ""
 
 msgctxt "model:ir.action,name:"
 msgid "Reverse BOMs"
-msgstr "Llistes de materials inverses"
+msgstr "Llistes de materials invers"
+
+msgctxt "model:ir.action,name:act_product_template_reverse_bom"
+msgid "Reverse BOMs"
+msgstr "Llistes de materials invers"
+
+msgctxt "model:ir.action,name:wizard_bom_reverse_tree_template"
+msgid "Reverse BOM Tree"
+msgstr "Arbre de l'escandall invers"
 
 msgctxt "model:ir.action,name:wizard_bom_tree_open_template"
 msgid "BOM Tree"
