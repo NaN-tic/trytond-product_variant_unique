@@ -1,6 +1,5 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-from trytond.const import OPERATORS
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
@@ -58,12 +57,13 @@ class Template(metaclass=PoolMeta):
 
     @classmethod
     def get_code(cls, templates, name):
-        pool = Pool()
-        Template = pool.get('product.template')
         with Transaction().set_context(active_test=False):
-            templates = Template.browse(templates)
-            result = {x.id: x.products[0].code if x.unique_variant and
-                x.products else None for x in templates}
+            result = {}
+            for template in cls.browse(templates):
+                if template.unique_variant:
+                    for product in template.products:
+                        if product.code and product.active:
+                            result[template.id] = product.code
         return result
 
     @classmethod
