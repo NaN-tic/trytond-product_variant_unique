@@ -58,12 +58,13 @@ class Template(metaclass=PoolMeta):
     @classmethod
     def get_code(cls, templates, name):
         with Transaction().set_context(active_test=False):
-            result = {}
+            result = {}.fromkeys([x.id for x in templates], None)
             for template in cls.browse(templates):
                 if template.unique_variant:
                     for product in template.products:
                         if product.code and product.active:
                             result[template.id] = product.code
+                            break
         return result
 
     @classmethod
