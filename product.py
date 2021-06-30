@@ -63,7 +63,7 @@ class Template(metaclass=PoolMeta):
                 if template.unique_variant:
                     for product in template.products:
                         if product.code and product.active:
-                            result[template.id] = product.code
+                            result[template.id] = product.code or ''
                             break
         return result
 
