@@ -23,7 +23,6 @@ class TestProductVariantCase(ModuleTestCase):
         template, uniq_template = Template.create([{
                     'name': 'Test variant',
                     'type': 'goods',
-                    'list_price': Decimal(1),
                     'cost_price_method': 'fixed',
                     'default_uom': kg.id,
                     'products': [('create', [{
@@ -32,7 +31,6 @@ class TestProductVariantCase(ModuleTestCase):
                     }, {
                     'name': 'Test unique variant',
                     'type': 'goods',
-                    'list_price': Decimal(1),
                     'cost_price_method': 'fixed',
                     'default_uom': kg.id,
                     'unique_variant': True,
