@@ -51,28 +51,15 @@ class TestProductVariantCase(ModuleTestCase):
 
         with self.assertRaises(UserError) as cm:
             Product.create([{
-                        'code': '1',
+                        'code': 'U-1',
                         'template': uniq_template.id,
                         }, {
-                        'code': '2',
+                        'code': 'U-2',
                         'template': uniq_template.id,
                         }])
         self.assertEqual(cm.exception.message,
             'The Template of the Product Variant must be unique.')
 
-        Product.delete(uniq_template.products)
-        Product.create([{
-                    'code': '1',
-                    'template': uniq_template.id,
-                    }])
-        self.assertEqual(uniq_template.code, '1')
-
-        self.assertEqual(Template.search([
-                    ('code', '=', '1'),
-                    ]), [uniq_template])
-        self.assertEqual(Template.search([
-                    ('rec_name', '=', '1'),
-                    ]), [uniq_template])
         with self.assertRaises(UserError) as cm:
             Product.create([{
                         'code': '3',
