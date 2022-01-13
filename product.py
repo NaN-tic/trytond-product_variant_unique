@@ -131,6 +131,17 @@ class Product(metaclass=PoolMeta):
         if 'unique_variant' not in cls.active.depends:
             cls.active.depends.append('unique_variant')
 
+        if not cls.suffix_code.states:
+            cls.suffix_code.states = {}
+        if cls.suffix_code.states.get('readonly'):
+            cls.suffix_code.states['readonly'] = (
+                cls.suffix_code.states['readonly']
+                | Eval('unique_variant', False))
+        else:
+            cls.suffix_code.states['readonly'] = Eval('unique_variant', False)
+        if 'unique_variant' not in cls.suffix_code.depends:
+            cls.suffix_code.depends.append('unique_variant')
+
     @fields.depends('_parent_template.unique_variant', 'template')
     def on_change_with_unique_variant(self, name=None):
         if self.template:
