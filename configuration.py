@@ -11,3 +11,7 @@ class Configuration(metaclass=PoolMeta):
     __name__ = 'product.configuration'
     unique_variant = fields.Boolean('Unique variant', help='Default value'
         ' for the unique variant field in template form.')
+
+    @staticmethod
+    def default_unique_variant():
+        return True
