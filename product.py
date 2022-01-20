@@ -173,10 +173,6 @@ class Product(metaclass=PoolMeta):
         if self.template:
             return self.template.unique_variant
 
-    @staticmethod
-    def default_unique_variant():
-        return True
-
     @classmethod
     def search_unique_variant(cls, name, clause):
         return [
