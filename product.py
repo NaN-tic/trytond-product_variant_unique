@@ -24,7 +24,7 @@ class Template(metaclass=PoolMeta):
         pool = Pool()
         Product = pool.get('product.product')
         cls.products.size = If(Eval('unique_variant', False), 1, 9999999)
-        cls.products.depends += ['unique_variant']
+        cls.products.depends.add('unique_variant')
         if hasattr(Product, 'attributes_string'):
             # Extra dependency with product_attribute_search
             cls.attributes_string = fields.Function(fields.Char('Attributes'),
@@ -129,7 +129,7 @@ class Product(metaclass=PoolMeta):
         else:
             cls.active.states['invisible'] = Eval('unique_variant', False)
         if 'unique_variant' not in cls.active.depends:
-            cls.active.depends.append('unique_variant')
+            cls.active.depends.add('unique_variant')
 
         if not cls.suffix_code.states:
             cls.suffix_code.states = {}
