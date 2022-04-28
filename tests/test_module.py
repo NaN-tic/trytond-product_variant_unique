@@ -1,16 +1,14 @@
-#!/usr/bin/env python
-# The COPYRIGHT file at the top level of this repository contains the full
-# copyright notices and license terms.
-import unittest
-from decimal import Decimal
+
+# This file is part of Tryton.  The COPYRIGHT file at the top level of
+# this repository contains the full copyright notices and license terms.
+
 from trytond.pool import Pool
-import trytond.tests.test_tryton
 from trytond.tests.test_tryton import ModuleTestCase, with_transaction
 from trytond.exceptions import UserError
 
 
-class TestProductVariantCase(ModuleTestCase):
-    'Test Product Variant module'
+class ProductVariantUniqueTestCase(ModuleTestCase):
+    'Test ProductVariantUnique module'
     module = 'product_variant_unique'
 
     @with_transaction()
@@ -63,8 +61,4 @@ class TestProductVariantCase(ModuleTestCase):
             'The Template of the Product Variant must be unique.')
 
 
-def suite():
-    suite = trytond.tests.test_tryton.suite()
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-            TestProductVariantCase))
-    return suite
+del ModuleTestCase
