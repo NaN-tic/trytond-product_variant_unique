@@ -81,36 +81,6 @@ class Template(metaclass=PoolMeta):
             Product.validate_unique_template(products)
         super(Template, cls).validate(templates)
 
-    @classmethod
-    def write(cls, *args):
-        pool = Pool()
-        Product = pool.get('product.product')
-
-        to_active_products = []
-        to_deactive_products = []
-        actions = iter(args)
-        for templates, values in zip(actions, actions):
-            if 'active' in values:
-                for template in templates:
-                    if template.unique_variant:
-                        with Transaction().set_context(active_test=False):
-                            template, = cls.browse([template.id])
-                            if values['active']:
-                                to_active_products += [p
-                                    for p in template.products]
-                            else:
-                                to_deactive_products += [p
-                                    for p in template.products if p.active]
-        super(Template, cls).write(*args)
-
-        product_args = []
-        if to_active_products:
-            product_args.extend((to_active_products, {'active': True}))
-        if to_deactive_products:
-            product_args.extend((to_deactive_products, {'active': False}))
-        if product_args:
-            Product.write(*product_args)
-
 
 class Product(metaclass=PoolMeta):
     __name__ = 'product.product'
@@ -121,13 +91,6 @@ class Product(metaclass=PoolMeta):
     def __setup__(cls):
         super(Product, cls).__setup__()
 
-        if not cls.active.states:
-            cls.active.states = {}
-        if cls.active.states.get('invisible'):
-            cls.active.states['invisible'] = (cls.active.states['invisible']
-                | Eval('unique_variant', False))
-        else:
-            cls.active.states['invisible'] = Eval('unique_variant', False)
         if 'unique_variant' not in cls.active.depends:
             cls.active.depends.add('unique_variant')
 
