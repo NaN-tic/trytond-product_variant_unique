@@ -231,8 +231,9 @@ class OpenBOMTree(metaclass=PoolMeta):
         context = Transaction().context
 
         new_context = {}
-        if context['active_model'] == 'product.template':
-            template = Template(context['active_id'])
+        active_id = context.get('active_id')
+        if active_id and context['active_model'] == 'product.template':
+            template = Template(active_id)
             if not template.products:
                 raise UserError(gettext(
                     'product_variant_unique.not_product_variant',
