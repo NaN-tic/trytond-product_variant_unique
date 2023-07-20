@@ -10,6 +10,7 @@ from trytond.exceptions import UserError
 class ProductVariantUniqueTestCase(ModuleTestCase):
     'Test ProductVariantUnique module'
     module = 'product_variant_unique'
+    extras = ['production_reverse_bom']
 
     @with_transaction()
     def test_unique_variant(self):
