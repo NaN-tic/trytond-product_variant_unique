@@ -20,10 +20,6 @@ msgstr ""
 "Valor por defecto del campo Variante única en el formulario de plantillas de"
 " producto."
 
-msgctxt "model:ir.action,name:"
-msgid "Reverse BOMs"
-msgstr "Listas de materiales inverso"
-
 msgctxt "model:ir.action,name:act_product_template_reverse_bom"
 msgid "Reverse BOMs"
 msgstr "Listas de materiales inverso"
