@@ -20,10 +20,6 @@ msgstr ""
 "Valor per defecte del camp Variant única en el formulari de plantilles de "
 "producte."
 
-msgctxt "model:ir.action,name:"
-msgid "Reverse BOMs"
-msgstr "Llistes de materials invers"
-
 msgctxt "model:ir.action,name:act_product_template_reverse_bom"
 msgid "Reverse BOMs"
 msgstr "Llistes de materials invers"
