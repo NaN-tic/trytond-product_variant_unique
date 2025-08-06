@@ -2,8 +2,7 @@
 <!-- The COPYRIGHT file at the top level of this repository contains the full
      copyright notices and license terms. -->
 <data>
-    <xpath expr="/form/notebook/page[@id='general']/field[@name='cost_price_method']"
-            position="after">
+    <xpath expr="/form/notebook/page[@id='general']/group[@id='checkboxes']" position="inside">
         <label name="unique_variant"/>
         <field name="unique_variant"/>
     </xpath>
