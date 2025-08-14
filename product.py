@@ -34,7 +34,7 @@ class Template(metaclass=PoolMeta):
     def default_unique_variant():
         pool = Pool()
         Config = pool.get('product.configuration')
-        config = Config.get_singleton()
+        config = Config(1)
         if config:
             return config.unique_variant
 
