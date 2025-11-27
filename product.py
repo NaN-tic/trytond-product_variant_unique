@@ -5,7 +5,7 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
 from trytond.i18n import gettext
-from trytond.exceptions import UserError
+from trytond.model.exceptions import ValidationError
 
 __all__ = ['Template', 'Product', 'OpenBOMTree', 'OpenReverseBOMTree']
 
@@ -126,12 +126,12 @@ class Product(metaclass=PoolMeta):
         unique_products = list(set(p for p in products if p.unique_variant))
         templates = [p.template.id for p in unique_products]
         if len(set(templates)) != len(templates):
-            raise UserError(gettext('product_variant_unique.template_uniq'))
+            raise ValidationError(gettext('product_variant_unique.template_uniq'))
         if cls.search([
                     ('id', 'not in', [p.id for p in unique_products]),
                     ('template', 'in', templates),
                     ], limit=1):
-            raise UserError(gettext('product_variant_unique.template_uniq'))
+            raise ValidationError(gettext('product_variant_unique.template_uniq'))
 
 
 class OpenReverseBOMTree(metaclass=PoolMeta):
