@@ -5,9 +5,7 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
 from trytond.i18n import gettext
-from trytond.model.exceptions import ValidationError
-
-__all__ = ['Template', 'Product', 'OpenBOMTree', 'OpenReverseBOMTree']
+from trytond.model.exceptions import UserError, ValidationError
 
 UNIQUE_STATES = {
         'invisible': ~Eval('unique_variant', False)
