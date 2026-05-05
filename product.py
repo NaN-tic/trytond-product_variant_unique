@@ -126,9 +126,9 @@ class Product(metaclass=PoolMeta):
         template_map = {}
         for product in products:
             if product.unique_variant:
-                variant_products.append(product)
-            else:
                 template_map[product.template.id] = product.template
+            else:
+                variant_products.append(product)
         if variant_products:
             cls.write(variant_products, {
                     'list_price': value,
