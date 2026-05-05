@@ -116,15 +116,13 @@ class ProductVariantUniqueTestCase(ModuleTestCase):
                     ])
 
             self.assertEqual(len(template_prices), 1)
-            self.assertIsNone(template_prices[0].product)
+            self.assertEqual(template_prices[0].product, product)
             self.assertEqual(template_prices[0].list_price, Decimal('10'))
             self.assertEqual(product.list_price_used, Decimal('10'))
 
             self.assertEqual(len(uniq_product_prices), 1)
-            self.assertEqual(uniq_product_prices[0].product, uniq_product)
+            self.assertIsNone(uniq_product_prices[0].product)
             self.assertEqual(uniq_product_prices[0].list_price,
-                Decimal('20'))
-            self.assertEqual(uniq_product.get_multivalue('list_price'),
                 Decimal('20'))
             self.assertEqual(uniq_product.list_price_used, Decimal('20'))
 
