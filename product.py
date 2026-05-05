@@ -89,6 +89,9 @@ class Product(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(Product, cls).__setup__()
+        cls.list_price_used.setter = 'set_list_price_used'
+        cls.list_price_used.readonly = False
+        cls.list_price_used.states = cls.list_price.states.copy()
 
         if 'unique_variant' not in cls.active.depends:
             cls.active.depends.add('unique_variant')
@@ -114,6 +117,26 @@ class Product(metaclass=PoolMeta):
         return [
             ('template.unique_variant',) + tuple(clause[1:]),
             ]
+
+    @classmethod
+    def set_list_price_used(cls, products, name, value):
+        pool = Pool()
+        Template = pool.get('product.template')
+        variant_products = []
+        template_map = {}
+        for product in products:
+            if product.unique_variant:
+                variant_products.append(product)
+            else:
+                template_map[product.template.id] = product.template
+        if variant_products:
+            cls.write(variant_products, {
+                    'list_price': value,
+                    })
+        if template_map:
+            Template.write(list(template_map.values()), {
+                    'list_price': value,
+                    })
 
     @classmethod
     def validate(cls, products):
