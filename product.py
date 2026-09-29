@@ -87,6 +87,17 @@ class Product(metaclass=PoolMeta):
         'on_change_with_unique_variant', searcher='search_unique_variant')
 
     @classmethod
+    def create(cls, vlist):
+        vlist = [values.copy() for values in vlist]
+        for values in vlist:
+            # If we not remove this field, when we create the a template with
+            # unique_variant, the list_price_used will be set to None and will
+            # overwrite the template's list price.
+            if values.get('list_price_used') is None:
+                values.pop('list_price_used', None)
+        return super().create(vlist)
+
+    @classmethod
     def __setup__(cls):
         super(Product, cls).__setup__()
         cls.list_price_used.setter = 'set_list_price_used'
