@@ -130,6 +130,27 @@ class Product(metaclass=PoolMeta):
             ]
 
     @classmethod
+    def check_modification(cls, mode, products, values=None, external=False):
+        # A unique variant is created with its suffix_code, and the client may
+        # send that unchanged value again when saving the template code.  Do
+        # not treat either case as a modification of the readonly suffix.
+        if external and mode == 'create' and values:
+            values = [item.copy() for item in values]
+            for product, item in zip(products, values):
+                if product.unique_variant:
+                    item.pop('suffix_code', None)
+        elif (external and mode == 'write' and values
+                and 'suffix_code' in values
+                and products
+                and all(product.unique_variant
+                    and product.suffix_code == values['suffix_code']
+                    for product in products)):
+            values = values.copy()
+            values.pop('suffix_code')
+        super().check_modification(
+            mode, products, values=values, external=external)
+
+    @classmethod
     def set_list_price_used(cls, products, name, value):
         pool = Pool()
         Template = pool.get('product.template')
