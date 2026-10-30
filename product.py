@@ -109,12 +109,13 @@ class Product(metaclass=PoolMeta):
 
         if not cls.suffix_code.states:
             cls.suffix_code.states = {}
-        if cls.suffix_code.states.get('readonly'):
-            cls.suffix_code.states['readonly'] = (
-                cls.suffix_code.states['readonly']
-                | Eval('unique_variant', False))
+        if cls.suffix_code.states.get('editable') is not None:
+            cls.suffix_code.states['editable'] = (
+                cls.suffix_code.states['editable']
+                & ~Eval('unique_variant', False))
         else:
-            cls.suffix_code.states['readonly'] = Eval('unique_variant', False)
+            cls.suffix_code.states['editable'] = ~Eval(
+                'unique_variant', False)
         if 'unique_variant' not in cls.suffix_code.depends:
             cls.suffix_code.depends.add('unique_variant')
 
@@ -128,27 +129,6 @@ class Product(metaclass=PoolMeta):
         return [
             ('template.unique_variant',) + tuple(clause[1:]),
             ]
-
-    @classmethod
-    def check_modification(cls, mode, products, values=None, external=False):
-        # A unique variant is created with its suffix_code, and the client may
-        # send that unchanged value again when saving the template code.  Do
-        # not treat either case as a modification of the readonly suffix.
-        if external and mode == 'create' and values:
-            values = [item.copy() for item in values]
-            for product, item in zip(products, values):
-                if product.unique_variant:
-                    item.pop('suffix_code', None)
-        elif (external and mode == 'write' and values
-                and 'suffix_code' in values
-                and products
-                and all(product.unique_variant
-                    and product.suffix_code == values['suffix_code']
-                    for product in products)):
-            values = values.copy()
-            values.pop('suffix_code')
-        super().check_modification(
-            mode, products, values=values, external=external)
 
     @classmethod
     def set_list_price_used(cls, products, name, value):
